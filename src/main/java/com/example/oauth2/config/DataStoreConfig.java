@@ -1,0 +1,40 @@
+package com.example.oauth2.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class DataStoreConfig {
+
+    @Value("classpath:oauth.sql")
+    private Resource schemaScript;
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource authDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+//    @Bean
+//    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
+//        final DataSourceInitializer initializer = new DataSourceInitializer();
+//        initializer.setDataSource(dataSource);
+//        initializer.setDatabasePopulator(databasePopulator());
+//        return initializer;
+//    }
+
+    private DatabasePopulator databasePopulator() {
+        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(schemaScript);
+        return populator;
+    }
+}
