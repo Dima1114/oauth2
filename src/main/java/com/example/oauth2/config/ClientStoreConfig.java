@@ -4,7 +4,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,24 +17,23 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"com.example.oauth2.entity", "com.example.oauth2.repository", "com.example.oauth2.service"},
-        entityManagerFactoryRef = "entityManager")
-public class DataStoreConfig {
+        basePackages = "com.example.oauth2.client",
+        entityManagerFactoryRef = "clientEntityManager",
+        transactionManagerRef = "clientTransactionManager")
+public class ClientStoreConfig {
 
     @Bean
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource dataSource() {
+    @ConfigurationProperties(prefix = "spring.auth.datasource")
+    public DataSource clientDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    @Primary
-    public LocalContainerEntityManagerFactoryBean entityManager() {
+    public LocalContainerEntityManagerFactoryBean clientEntityManager() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan("com.example.oauth2.entity", "com.example.oauth2.repository", "com.example.oauth2.service");
+        em.setDataSource(clientDataSource());
+        em.setPackagesToScan("com.example.oauth2.client");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -48,13 +46,12 @@ public class DataStoreConfig {
     }
 
     @Bean
-    @Primary
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager clientTransactionManager() {
 
         JpaTransactionManager transactionManager
                 = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(
-                entityManager().getObject());
+                clientEntityManager().getObject());
         return transactionManager;
     }
 }

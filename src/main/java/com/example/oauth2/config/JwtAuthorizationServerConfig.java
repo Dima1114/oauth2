@@ -1,8 +1,10 @@
 package com.example.oauth2.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,12 +23,12 @@ public class JwtAuthorizationServerConfig extends AuthorizationServerConfigurerA
     private static final String PRIVATE_KEY = "auth_private_key";
 
     private AuthenticationManager authenticationManager;
-    private DataSource dataSource;
+    private DataSource clientDataSource;
 
     public JwtAuthorizationServerConfig(AuthenticationManager authenticationManager,
-                                        DataSource dataSource) {
+                                        @Qualifier("clientDataSource") DataSource dataSource) {
         this.authenticationManager = authenticationManager;
-        this.dataSource = dataSource;
+        this.clientDataSource = dataSource;
     }
 
     @Bean
@@ -59,6 +61,6 @@ public class JwtAuthorizationServerConfig extends AuthorizationServerConfigurerA
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
-                .jdbc(dataSource);
+                .jdbc(clientDataSource).passwordEncoder(new BCryptPasswordEncoder());
     }
 }
