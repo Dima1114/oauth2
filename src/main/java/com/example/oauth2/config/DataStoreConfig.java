@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"com.example.oauth2.entity", "com.example.oauth2.repository", "com.example.oauth2.service"},
+        basePackages = {"com.starter.user"},
         entityManagerFactoryRef = "entityManager")
 public class DataStoreConfig {
 
@@ -35,12 +35,12 @@ public class DataStoreConfig {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.example.oauth2.entity", "com.example.oauth2.repository", "com.example.oauth2.service");
+        em.setPackagesToScan("com.starter.user");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "validate");
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         em.setJpaPropertyMap(properties);
 
