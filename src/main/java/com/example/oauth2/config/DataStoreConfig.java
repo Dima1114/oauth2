@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"com.starter.user"},
+        basePackages = {"com.starter.user", "com.example.oauth2.repository"},
         entityManagerFactoryRef = "entityManager")
 public class DataStoreConfig {
 
