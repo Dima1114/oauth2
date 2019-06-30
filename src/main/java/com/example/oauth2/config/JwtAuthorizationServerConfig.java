@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
-//@PropertySource({"classpath:application.properties"})
 public class JwtAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private static final String PRIVATE_KEY = "auth_private_key";

@@ -1,8 +1,8 @@
 package com.example.oauth2.service;
 
+import com.example.oauth2.entity.JwtUserDetails;
+import com.example.oauth2.entity.User;
 import com.example.oauth2.repository.UserRepository;
-import com.starter.user.entity.JwtUserDetails;
-import com.starter.user.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

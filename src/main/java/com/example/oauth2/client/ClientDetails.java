@@ -1,5 +1,7 @@
 package com.example.oauth2.client;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "oauth_client_details")
 public class ClientDetails {
+
+    private final static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Id
     @Column(name = "client_id")
@@ -66,7 +70,7 @@ public class ClientDetails {
     }
 
     public ClientDetails setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        this.clientSecret = encoder.encode(clientSecret);
         return this;
     }
 

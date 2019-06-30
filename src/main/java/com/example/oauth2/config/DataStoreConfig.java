@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"com.starter.user", "com.example.oauth2.repository"},
+        basePackages = {"com.example.oauth2.repository"},
         entityManagerFactoryRef = "entityManager")
 public class DataStoreConfig {
 
@@ -35,7 +35,7 @@ public class DataStoreConfig {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.starter.user");
+        em.setPackagesToScan("com.example.oauth2.entity");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
